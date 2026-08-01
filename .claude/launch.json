@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "faces-by-sakshi",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"/Users/apurvtyagi/.nvm/versions/node/v24.18.1/bin:$PATH\" && exec npm run dev"
+      ],
+      "port": 3000
+    }
+  ]
+}
