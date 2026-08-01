@@ -3,6 +3,9 @@ import SectionHeading from "@/components/SectionHeading";
 import SmartImage from "@/components/SmartImage";
 import Button from "@/components/Button";
 import { siteConfig } from "@/data/site";
+import { getContent } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About | Meet Your Makeup Artist in Noida",
@@ -27,7 +30,9 @@ const premiumBrands = [
   "& other professional luxury brands",
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getContent();
+
   return (
     <div>
       <section className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-20">
@@ -54,7 +59,7 @@ export default function AboutPage() {
             </p>
           </div>
           <SmartImage
-            src=""
+            src={content.aboutImage}
             alt="Bridal makeup by Faces by Sakshi"
             label="About Photo — Add a signature look here"
             className="aspect-[4/5] w-full rounded-2xl"
@@ -66,7 +71,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="grid gap-10 md:grid-cols-[minmax(0,220px)_1fr] md:items-start">
             <SmartImage
-              src=""
+              src={content.artistImage}
               alt={siteConfig.artistName}
               label="Artist Photo — Upload your photo here"
               rounded

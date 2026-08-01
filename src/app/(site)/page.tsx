@@ -5,10 +5,10 @@ import PortfolioGallery from "@/components/PortfolioGallery";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import Reveal from "@/components/Reveal";
 import { siteConfig, whatsappHref } from "@/data/site";
-import { portfolioItems } from "@/data/portfolio";
 import { testimonials } from "@/data/testimonials";
+import { getContent } from "@/lib/content";
 
-const featuredItems = portfolioItems.filter((item) => item.featured);
+export const dynamic = "force-dynamic";
 
 const trustPoints = [
   {
@@ -25,7 +25,10 @@ const trustPoints = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const content = await getContent();
+  const featuredItems = content.portfolioItems.filter((item) => item.featured);
+
   return (
     <div>
       {/* Hero */}
@@ -56,7 +59,7 @@ export default function Home() {
 
           <Reveal delay={150}>
             <SmartImage
-              src=""
+              src={content.heroImage}
               alt="Signature bridal makeup look by Faces by Sakshi"
               label="Hero Photo — Add your best bridal look here"
               className="aspect-[4/5] w-full rounded-3xl shadow-xl shadow-black/10"

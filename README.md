@@ -13,31 +13,60 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Editing content (no code changes needed)
 
-All editable business content lives in `src/data/`:
+Most business content lives in `src/data/`:
 
 - `site.ts` — business name, contact info, socials, address, working hours, Formspree endpoint.
 - `services.ts` — pricing packages and add-ons, shown on the Services page.
-- `portfolio.ts` — portfolio images and their categories, shown on the Home and Portfolio pages.
+- `portfolio.ts` — default/seed portfolio images and categories.
 - `testimonials.ts` — client testimonials shown in the Home page carousel.
 
-### Adding real photos
+Photos (hero, about, artist, portfolio) are managed through the **`/admin`
+page** described below — you don't need to touch code or GitHub for those.
 
-Every image on the site currently shows a labeled placeholder tile because no
-photos have been supplied yet. To add a real photo:
+### Adding more price packages or testimonials
 
-1. Put the image file in `public/images/portfolio/` (or `public/images/misc/`
-   for the hero/about/artist photos).
-2. In the relevant data file, set the `image` field to the path, e.g.
-   `"/images/portfolio/bridal-1.jpg"`.
-3. For the Home page hero photo and the About page photos, edit the `src=""`
-   props directly in `src/app/page.tsx` and `src/app/about/page.tsx`.
-
-Leaving `image` as `""` keeps the placeholder tile showing — nothing breaks.
-
-### Adding more portfolio items or price packages
-
-Just add another object to the array in `portfolio.ts` or `services.ts` —
+Just add another object to the array in `services.ts` or `testimonials.ts` —
 no other code changes are required.
+
+## Admin photo uploads (`/admin`)
+
+There's a password-protected admin page at `/admin` where photos can be
+uploaded directly from a browser — no code editing or GitHub required:
+
+- Upload/replace the Home hero photo, About page photo, and Artist photo.
+- Add or delete Portfolio photos, with category, title, and a "show on
+  homepage" toggle.
+
+Changes go live within a few seconds, no redeploy needed.
+
+### One-time setup (do this after deploying to Vercel)
+
+1. **Set an admin password.** In the Vercel project → Settings →
+   Environment Variables, add:
+   ```
+   ADMIN_PASSWORD=choose-a-strong-password
+   ```
+2. **Connect image storage.** In the Vercel project → Storage tab → Create
+   Database → **Blob** → connect it to this project. Vercel automatically
+   adds a `BLOB_READ_WRITE_TOKEN` environment variable — no manual copying
+   needed.
+3. Redeploy (or it will pick up the new env vars on the next deploy).
+4. Visit `https://yoursite.com/admin`, log in with the password from step 1,
+   and start uploading.
+
+Until both env vars are set, the site shows the placeholder tiles as before,
+and `/admin` will show a clear error if you try to upload — nothing breaks.
+
+### Testing admin locally
+
+Create a `.env.local` file (already gitignored) with:
+```
+ADMIN_PASSWORD=any-password-for-local-testing
+```
+You can log in and browse `/admin` locally without a Blob store, but actual
+uploads will show a "storage isn't set up yet" message until you also pull
+the `BLOB_READ_WRITE_TOKEN` from Vercel (`vercel env pull .env.local`) or set
+one up separately for local use.
 
 ## Booking form (email notifications)
 
@@ -55,13 +84,13 @@ also shows a fallback email/phone for the client to contact directly.
 
 ## Contact page map
 
-The embedded Google Map in `src/data/site.ts` (`mapEmbedSrc`) currently
-points to a generic "Noida, Uttar Pradesh" search. Replace it with an exact
-address embed from Google Maps (Share → Embed a map) once the precise studio
-address is finalised.
+The embedded Google Map in `src/data/site.ts` (`mapEmbedSrc`) points to the
+studio address (N Block, Vivek Vihar, Sector 82, Noida). Update it the same
+way (Google Maps → Share → Embed a map) if the address ever changes.
 
 ## Deploying
 
 This is a standard Next.js app — deploy directly to
-[Vercel](https://vercel.com/new) by importing this repository. No
-environment variables are required since content lives in `src/data/`.
+[Vercel](https://vercel.com/new) by importing this repository. See the
+"Admin photo uploads" section above for the two environment variables to add
+after the first deploy.
