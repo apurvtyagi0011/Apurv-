@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteConfig, whatsappHref } from "@/data/site";
+import { whatsappHref, phoneHref, type SiteSettings } from "@/data/site";
 
 const quickLinks = [
   { href: "/portfolio", label: "Portfolio" },
@@ -9,19 +9,19 @@ const quickLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Footer() {
+export default function Footer({ site }: { site: SiteSettings }) {
   return (
     <footer className="mt-auto border-t border-black/10 bg-black text-ivory/80">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
         <div>
-          <span className="font-serif text-2xl text-ivory">{siteConfig.businessName}</span>
+          <span className="font-serif text-2xl text-ivory">{site.businessName}</span>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-ivory/60">
-            {siteConfig.tagline}. Based in {siteConfig.city}, serving brides across Delhi NCR
+            {site.tagline}. Based in {site.city}, serving brides across Delhi NCR
             and destination weddings.
           </p>
           <div className="mt-5 flex items-center gap-3">
             <a
-              href={siteConfig.instagramUrl}
+              href={site.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -34,7 +34,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href={whatsappHref()}
+              href={whatsappHref(site.phoneDigits)}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -68,25 +68,25 @@ export default function Footer() {
             Get in Touch
           </h3>
           <ul className="mt-4 space-y-2.5 text-sm text-ivory/70">
-            <li>{siteConfig.address}</li>
+            <li>{site.address}</li>
             <li>
-              <a href={siteConfig.phoneHref} className="hover:text-ivory">
-                {siteConfig.phoneDisplay}
+              <a href={phoneHref(site.phoneDigits)} className="hover:text-ivory">
+                {site.phoneDisplay}
               </a>
             </li>
             <li>
-              <a href={`mailto:${siteConfig.email}`} className="hover:text-ivory">
-                {siteConfig.email}
+              <a href={`mailto:${site.email}`} className="hover:text-ivory">
+                {site.email}
               </a>
             </li>
             <li>
-              {siteConfig.workingDays} · {siteConfig.workingHours}
+              {site.workingDays} · {site.workingHours}
             </li>
           </ul>
         </div>
       </div>
       <div className="border-t border-ivory/10 px-5 py-5 text-center text-xs text-ivory/40 sm:px-8">
-        © {new Date().getFullYear()} {siteConfig.businessName}. All rights reserved.
+        © {new Date().getFullYear()} {site.businessName}. All rights reserved.
       </div>
     </footer>
   );

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
 import SmartImage from "@/components/SmartImage";
 import Button from "@/components/Button";
-import { siteConfig } from "@/data/site";
 import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -13,25 +12,9 @@ export const metadata: Metadata = {
     "Meet Sakshi Tyagi, a certified bridal makeup artist based in Noida — trained by the Academy of Freelance Makeup, Dubai, serving Delhi NCR and destination weddings.",
 };
 
-const signatureStyles = [
-  "Soft Glam",
-  "Minimal & Elegant Makeup",
-  "Smokey Eye Looks",
-  "Natural Radiant Bridal Makeup",
-  "Modern Glam Bridal Looks",
-];
-
-const premiumBrands = [
-  "Charlotte Tilbury",
-  "MAC Cosmetics",
-  "Huda Beauty",
-  "Too Faced",
-  "Forever52",
-  "& other professional luxury brands",
-];
-
 export default async function AboutPage() {
   const content = await getContent();
+  const { site, about } = content;
 
   return (
     <div>
@@ -44,19 +27,8 @@ export default async function AboutPage() {
         />
         <div className="mt-8 grid gap-10 md:grid-cols-2 md:items-start">
           <div className="space-y-4 text-base leading-relaxed text-charcoal/75">
-            <p>
-              Every bride deserves to feel confident, beautiful, and truly herself on her
-              special day. At {siteConfig.businessName}, makeup is more than just enhancing
-              features—it&rsquo;s about bringing your unique story to life.
-            </p>
-            <p>
-              Founded in 2025, {siteConfig.businessName} is a premium freelance bridal makeup
-              service based in {siteConfig.city}, offering personalized makeup experiences for
-              brides across Delhi NCR and destination weddings. Whether it&rsquo;s your Roka,
-              Engagement, Mehendi, Haldi, Wedding, Reception, or any special celebration,
-              Sakshi travels to your venue to create a flawless look that reflects your
-              personality and style.
-            </p>
+            <p>{about.bioParagraph1}</p>
+            <p>{about.bioParagraph2}</p>
           </div>
           <SmartImage
             src={content.aboutImage}
@@ -72,7 +44,7 @@ export default async function AboutPage() {
           <div className="grid gap-10 md:grid-cols-[minmax(0,220px)_1fr] md:items-start">
             <SmartImage
               src={content.artistImage}
-              alt={siteConfig.artistName}
+              alt={site.artistName}
               label="Artist Photo — Upload your photo here"
               rounded
               className="mx-auto aspect-square w-40 sm:w-52 md:mx-0"
@@ -82,20 +54,11 @@ export default async function AboutPage() {
                 Meet the Artist
               </span>
               <h2 className="mt-3 font-serif text-3xl text-black sm:text-4xl">
-                Hi, I&rsquo;m {siteConfig.artistName}
+                Hi, I&rsquo;m {site.artistName}
               </h2>
               <div className="mt-5 space-y-4 text-base leading-relaxed text-charcoal/75">
-                <p>
-                  I&rsquo;m a professionally trained makeup artist certified by the Academy of
-                  Freelance Makeup, Dubai. I chose makeup as my profession because I truly
-                  believe that every face tells a story—and I love being a part of that story.
-                  Nothing brings me more joy than seeing a bride smile with confidence when she
-                  looks in the mirror for the first time.
-                </p>
-                <p>
-                  My goal is never to change who you are but to enhance your natural beauty and
-                  make you feel like the most beautiful version of yourself.
-                </p>
+                <p>{about.artistIntro1}</p>
+                <p>{about.artistIntro2}</p>
               </div>
             </div>
           </div>
@@ -109,7 +72,7 @@ export default async function AboutPage() {
           subtitle="Every bride is unique, which is why every look is customised to suit her personality, outfit, skin tone, and wedding theme."
         />
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          {signatureStyles.map((style) => (
+          {about.signatureStyles.map((style) => (
             <span
               key={style}
               className="rounded-full border border-gold/40 bg-blush/30 px-5 py-2.5 text-sm font-medium text-charcoal"
@@ -135,7 +98,7 @@ export default async function AboutPage() {
             variant="dark"
           />
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            {premiumBrands.map((brand) => (
+            {about.premiumBrands.map((brand) => (
               <span
                 key={brand}
                 className="rounded-full border border-gold-light/40 px-5 py-2.5 text-sm text-ivory/85"

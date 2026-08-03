@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
-import { siteConfig, whatsappHref } from "@/data/site";
+import { whatsappHref, phoneHref, buildMapUrls } from "@/data/site";
+import { getContent } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Contact | Makeup Artist in Noida",
@@ -8,13 +11,16 @@ export const metadata: Metadata = {
     "Get in touch with Faces by Sakshi — makeup artist based in Noida, Uttar Pradesh, serving Delhi NCR. Call, email, or message on WhatsApp.",
 };
 
-const socials = [
-  { label: "Instagram", handle: siteConfig.instagramHandle, href: siteConfig.instagramUrl },
-  { label: "Facebook", handle: siteConfig.facebookUrl ? "Visit Page" : "[Add Facebook link]", href: siteConfig.facebookUrl },
-  { label: "YouTube", handle: siteConfig.youtubeUrl ? "Visit Channel" : "[Add YouTube link]", href: siteConfig.youtubeUrl },
-];
+export default async function ContactPage() {
+  const { site } = await getContent();
+  const { mapEmbedSrc } = buildMapUrls(site.address);
 
-export default function ContactPage() {
+  const socials = [
+    { label: "Instagram", handle: site.instagramHandle, href: site.instagramUrl },
+    { label: "Facebook", handle: site.facebookUrl ? "Visit Page" : "[Add Facebook link]", href: site.facebookUrl },
+    { label: "YouTube", handle: site.youtubeUrl ? "Visit Channel" : "[Add YouTube link]", href: site.youtubeUrl },
+  ];
+
   return (
     <div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-20">
       <SectionHeading
@@ -29,23 +35,23 @@ export default function ContactPage() {
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
               Address
             </h3>
-            <p className="mt-2 text-charcoal/75">{siteConfig.address}</p>
+            <p className="mt-2 text-charcoal/75">{site.address}</p>
           </div>
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Phone</h3>
-            <a href={siteConfig.phoneHref} className="mt-2 block text-charcoal/75 hover:text-gold">
-              {siteConfig.phoneDisplay}
+            <a href={phoneHref(site.phoneDigits)} className="mt-2 block text-charcoal/75 hover:text-gold">
+              {site.phoneDisplay}
             </a>
           </div>
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Email</h3>
             <a
-              href={`mailto:${siteConfig.email}`}
+              href={`mailto:${site.email}`}
               className="mt-2 block text-charcoal/75 hover:text-gold"
             >
-              {siteConfig.email}
+              {site.email}
             </a>
           </div>
 
@@ -54,7 +60,7 @@ export default function ContactPage() {
               Working Hours
             </h3>
             <p className="mt-2 text-charcoal/75">
-              {siteConfig.workingDays} · {siteConfig.workingHours}
+              {site.workingDays} · {site.workingHours}
             </p>
           </div>
 
@@ -76,7 +82,7 @@ export default function ContactPage() {
               ))}
             </div>
             <a
-              href={whatsappHref(`Hi ${siteConfig.artistName}, I'd like to get in touch.`)}
+              href={whatsappHref(site.phoneDigits, `Hi ${site.artistName}, I'd like to get in touch.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
@@ -88,8 +94,8 @@ export default function ContactPage() {
 
         <div className="overflow-hidden rounded-2xl border border-black/10">
           <iframe
-            src={siteConfig.mapEmbedSrc}
-            title={`${siteConfig.businessName} location map`}
+            src={mapEmbedSrc}
+            title={`${site.businessName} location map`}
             width="100%"
             height="100%"
             style={{ border: 0, minHeight: 420 }}

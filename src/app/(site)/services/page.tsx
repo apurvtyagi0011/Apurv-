@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceCard from "@/components/ServiceCard";
 import Button from "@/components/Button";
-import { pricingNotes, serviceCategories } from "@/data/services";
+import { getContent } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Services & Pricing | Makeup Artist in Noida",
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
     "Bridal, engagement and party makeup pricing by Faces by Sakshi — a makeup artist based in Noida serving Delhi NCR. Add-ons include saree draping & hair styling.",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { services, pricingNotes } = await getContent();
+
   return (
     <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 sm:py-20">
       <SectionHeading
@@ -20,7 +24,7 @@ export default function ServicesPage() {
       />
 
       <div className="mt-14 space-y-14">
-        {serviceCategories.map((category) => (
+        {services.map((category) => (
           <div key={category.id}>
             <h3 className="font-serif text-2xl text-black">{category.title}</h3>
             <div className="mt-6 space-y-4">

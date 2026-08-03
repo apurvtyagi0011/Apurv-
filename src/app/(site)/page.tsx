@@ -4,8 +4,7 @@ import SmartImage from "@/components/SmartImage";
 import PortfolioGallery from "@/components/PortfolioGallery";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import Reveal from "@/components/Reveal";
-import { siteConfig, whatsappHref } from "@/data/site";
-import { testimonials } from "@/data/testimonials";
+import { whatsappHref } from "@/data/site";
 import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -36,13 +35,13 @@ export default async function Home() {
         <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 md:grid-cols-2 md:items-center md:py-24">
           <Reveal>
             <span className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-              {siteConfig.businessName}
+              {content.site.businessName}
             </span>
             <h1 className="mt-4 font-serif text-4xl leading-tight text-black sm:text-5xl md:text-6xl">
-              {siteConfig.tagline}
+              {content.site.tagline}
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-charcoal/70">
-              {siteConfig.shortIntro}
+              {content.site.shortIntro}
             </p>
             <div className="mt-8 flex flex-wrap gap-3.5">
               <Button href="/portfolio" variant="primary">
@@ -112,7 +111,7 @@ export default async function Home() {
             />
           </Reveal>
           <Reveal delay={100} className="mt-12">
-            <TestimonialsCarousel testimonials={testimonials} variant="dark" />
+            <TestimonialsCarousel testimonials={content.testimonials} variant="dark" />
           </Reveal>
         </div>
       </section>
@@ -133,7 +132,8 @@ export default async function Home() {
             </Button>
             <Button
               href={whatsappHref(
-                `Hi ${siteConfig.artistName}, I'd like to enquire about your makeup services.`
+                content.site.phoneDigits,
+                `Hi ${content.site.artistName}, I'd like to enquire about your makeup services.`
               )}
               variant="outline"
               target="_blank"

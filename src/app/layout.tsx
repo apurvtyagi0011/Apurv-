@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import { siteConfig } from "@/data/site";
+import { getContent } from "@/lib/content";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -14,29 +14,32 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://facesbysakshi.example.com"),
-  title: {
-    default: `${siteConfig.businessName} | Makeup Artist in ${siteConfig.city}`,
-    template: `%s | ${siteConfig.businessName}`,
-  },
-  description: `${siteConfig.tagline}. Premium bridal, engagement & party makeup by ${siteConfig.artistName}, serving ${siteConfig.city} and Delhi NCR.`,
-  keywords: [
-    "makeup artist Noida",
-    "bridal makeup artist Delhi NCR",
-    "makeup artist Delhi NCR",
-    "engagement makeup Noida",
-    "party makeup artist Noida",
-    siteConfig.businessName,
-  ],
-  openGraph: {
-    title: `${siteConfig.businessName} | Makeup Artist in ${siteConfig.city}`,
-    description: siteConfig.tagline,
-    siteName: siteConfig.businessName,
-    locale: "en_IN",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { site } = await getContent();
+  return {
+    metadataBase: new URL("https://facesbysakshi.example.com"),
+    title: {
+      default: `${site.businessName} | Makeup Artist in ${site.city}`,
+      template: `%s | ${site.businessName}`,
+    },
+    description: `${site.tagline}. Premium bridal, engagement & party makeup by ${site.artistName}, serving ${site.city} and Delhi NCR.`,
+    keywords: [
+      "makeup artist Noida",
+      "bridal makeup artist Delhi NCR",
+      "makeup artist Delhi NCR",
+      "engagement makeup Noida",
+      "party makeup artist Noida",
+      site.businessName,
+    ],
+    openGraph: {
+      title: `${site.businessName} | Makeup Artist in ${site.city}`,
+      description: site.tagline,
+      siteName: site.businessName,
+      locale: "en_IN",
+      type: "website",
+    },
+  };
+}
 
 export default function RootLayout({
   children,

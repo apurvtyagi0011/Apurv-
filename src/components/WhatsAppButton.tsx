@@ -1,9 +1,11 @@
-import { siteConfig, whatsappHref } from "@/data/site";
+import { whatsappHref } from "@/data/site";
 
-export default function WhatsAppButton() {
+type Props = { artistName: string; phoneDigits: string };
+
+export default function WhatsAppButton({ artistName, phoneDigits }: Props) {
   return (
     <a
-      href={whatsappHref(`Hi ${siteConfig.artistName}, I'd like to enquire about your makeup services.`)}
+      href={whatsappHref(phoneDigits, `Hi ${artistName}, I'd like to enquire about your makeup services.`)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

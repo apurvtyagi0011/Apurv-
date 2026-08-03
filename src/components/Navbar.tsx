@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { siteConfig } from "@/data/site";
 
 const links = [
   { href: "/", label: "Home" },
@@ -13,7 +12,7 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ businessName }: { businessName: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,7 +41,7 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
         <Link href="/" className="flex flex-col leading-tight">
           <span className="font-serif text-xl tracking-wide text-black sm:text-2xl">
-            {siteConfig.businessName}
+            {businessName}
           </span>
           <span className="text-[10px] uppercase tracking-[0.2em] text-gold sm:text-xs">
             Makeup Artist

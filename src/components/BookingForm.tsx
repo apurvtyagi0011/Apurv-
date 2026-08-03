@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { serviceCategories } from "@/data/services";
-import { siteConfig } from "@/data/site";
+import type { ServiceCategory } from "@/data/services";
+import { phoneHref, type SiteSettings } from "@/data/site";
 
 const eventTypes = [
   "Wedding",
@@ -21,16 +21,21 @@ const locationOptions = [
   "Sakshi's studio, Noida",
 ];
 
-const packageOptions = serviceCategories.flatMap((category) =>
-  category.items.map((item) => `${item.name} — ${item.price}`)
-);
-
 type Status = "idle" | "submitting" | "success" | "error";
 
-export default function BookingForm() {
+type Props = {
+  site: SiteSettings;
+  serviceCategories: ServiceCategory[];
+};
+
+export default function BookingForm({ site, serviceCategories }: Props) {
   const searchParams = useSearchParams();
   const prefilledPackage = searchParams.get("package") ?? "";
   const [status, setStatus] = useState<Status>("idle");
+
+  const packageOptions = serviceCategories.flatMap((category) =>
+    category.items.map((item) => `${item.name} — ${item.price}`)
+  );
 
   const matchedPackage = prefilledPackage
     ? packageOptions.find((opt) => opt.startsWith(prefilledPackage)) ?? ""
@@ -51,7 +56,7 @@ export default function BookingForm() {
     }
 
     try {
-      const res = await fetch(siteConfig.formspreeEndpoint, {
+      const res = await fetch(site.formspreeEndpoint, {
         method: "POST",
         headers: { Accept: "application/json" },
         body: formData,
@@ -72,13 +77,13 @@ export default function BookingForm() {
       <div className="rounded-2xl border border-gold/30 bg-blush/25 p-8 text-center">
         <h3 className="font-serif text-2xl text-black">Thank you!</h3>
         <p className="mt-3 text-charcoal/75">
-          Your booking request has been received. {siteConfig.artistName} will get back to you
+          Your booking request has been received. {site.artistName} will get back to you
           shortly to confirm availability for your date.
         </p>
         <p className="mt-4 text-sm text-charcoal/60">
           For urgent enquiries, call{" "}
-          <a href={siteConfig.phoneHref} className="text-gold underline">
-            {siteConfig.phoneDisplay}
+          <a href={phoneHref(site.phoneDigits)} className="text-gold underline">
+            {site.phoneDisplay}
           </a>{" "}
           or message on WhatsApp.
         </p>
@@ -184,8 +189,8 @@ export default function BookingForm() {
       {status === "error" && (
         <p className="text-sm text-red-600">
           Something went wrong sending your request. Please try again, or contact us directly at{" "}
-          <a href={`mailto:${siteConfig.email}`} className="underline">
-            {siteConfig.email}
+          <a href={`mailto:${site.email}`} className="underline">
+            {site.email}
           </a>
           .
         </p>
