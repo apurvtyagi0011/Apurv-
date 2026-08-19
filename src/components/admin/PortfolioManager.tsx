@@ -71,7 +71,12 @@ export default function PortfolioManager({ items, categories }: Props) {
         </select>
         <input type="text" name="title" placeholder="Title (optional)" className="form-input" />
         <label className="flex items-center gap-2 text-sm text-charcoal/70 sm:col-span-2">
-          <input type="checkbox" name="featured" className="h-4 w-4" />
+          <input
+            type="checkbox"
+            name="featured"
+            defaultChecked
+            className="h-4 w-4"
+          />
           Show on homepage
         </label>
         <button

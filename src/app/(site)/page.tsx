@@ -26,7 +26,12 @@ const trustPoints = [
 
 export default async function Home() {
   const content = await getContent();
-  const featuredItems = content.portfolioItems.filter((item) => item.featured);
+  // Never show seeded placeholder cards on the public homepage. Use photos
+  // explicitly marked as featured first; if none were selected during upload,
+  // fall back to the newest real portfolio images so uploaded work is visible.
+  const uploadedItems = content.portfolioItems.filter((item) => Boolean(item.image));
+  const featuredItems = uploadedItems.filter((item) => item.featured);
+  const homepageItems = (featuredItems.length > 0 ? featuredItems : uploadedItems).slice(0, 6);
 
   return (
     <div>
@@ -90,14 +95,22 @@ export default async function Home() {
             subtitle="A glimpse into looks crafted for brides and clients across Delhi NCR."
           />
         </Reveal>
-        <Reveal delay={100} className="mt-12">
-          <PortfolioGallery items={featuredItems} />
-        </Reveal>
-        <div className="mt-10 text-center">
-          <Button href="/portfolio" variant="outline">
-            View Full Portfolio
-          </Button>
-        </div>
+        {homepageItems.length > 0 ? (
+          <>
+            <Reveal delay={100} className="mt-12">
+              <PortfolioGallery items={homepageItems} />
+            </Reveal>
+            <div className="mt-10 text-center">
+              <Button href="/portfolio" variant="outline">
+                View Full Portfolio
+              </Button>
+            </div>
+          </>
+        ) : (
+          <p className="mt-10 text-center text-sm text-charcoal/55">
+            New portfolio looks are coming soon.
+          </p>
+        )}
       </section>
 
       {/* Testimonials */}
